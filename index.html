@@ -175,7 +175,7 @@
 
                 axios.all([
                   // Temperature get request
-                  axios.get('https://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + lng + '&units=metric&appid=5f41109a07084f60c4f5f65616803391'),
+                  axios.get('https://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + lng + '&units=metric&appid=APIKEY'),
                   // Sunrise and sunset hours get request
                   axios.get('https://api.sunrise-sunset.org/json?lat=' + lat + '&lng=' + lng)
                 ])
