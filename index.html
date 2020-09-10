@@ -1,0 +1,215 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Meteo APP</title>
+
+    <!-- Style Sheets -->
+    <link rel="stylesheet" type="text/css" href="style.css" />
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/v4-shims.css" />
+
+    <!-- Google Places Autocomplete -->
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA3teMW6eiHClSASH1CTjitPl_GAD8BgaM&libraries=places"></script>
+  </head>
+  <body>
+      <div id="app">
+      <!-- Search Nav-->
+      <div class="navbar">
+        <input type="text" name="search" id="search" placeholder="Search city" size="50" autocomplete="on" :disabled="full" />
+        <i class="fas fa-map-marker-alt"></i>
+      </div>
+
+      <!-- Page Content -->
+      <div class="container">
+        <!-- Table -->
+        <table>
+          <thead>
+            <tr>
+              <th>
+                <div class="th-wrap" @click="sort('name')">
+                  <i class="fas fa-map-marked-alt th-icon"></i>
+                  <div class="sort active">
+                    <i class="fas fa-long-arrow-alt-down" v-bind:class="{ 'active': currentColumn == 'name' && currentOrder == 'asc' }"></i>
+                    <i class="fas fa-long-arrow-alt-up" v-bind:class="{ 'active': currentColumn == 'name' && currentOrder == 'desc' }"></i>
+                  </div>
+                </div>
+              </th>
+              <th>
+                <div class="th-wrap" @click="sort('temp')">
+                  <i class="fas fa-temperature-low th-icon"></i>
+                  <div class="sort">
+                    <i class="fas fa-long-arrow-alt-down" v-bind:class="{ 'active': currentColumn == 'temp' && currentOrder == 'asc' }"></i>
+                    <i class="fas fa-long-arrow-alt-up" v-bind:class="{ 'active': currentColumn == 'temp' && currentOrder == 'desc' }"></i>
+                  </div>
+                </div>
+              </th>
+              <th>
+                <div class="th-wrap" @click="sort('sunrise')">
+                  <i class="fas fa-sun th-icon"></i>
+                  <div class="sort">
+                    <i class="fas fa-long-arrow-alt-down" v-bind:class="{ 'active': currentColumn == 'sunrise' && currentOrder == 'asc' }"></i>
+                    <i class="fas fa-long-arrow-alt-up" v-bind:class="{ 'active': currentColumn == 'sunrise' && currentOrder == 'desc' }"></i>
+                  </div>
+                </div>
+              </th>
+              <th>
+                <div class="th-wrap" @click="sort('sunset')">
+                  <i class="fas fa-moon th-icon"></i>
+                  <div class="sort">
+                    <i class="fas fa-long-arrow-alt-down" v-bind:class="{ 'active': currentColumn == 'sunset' && currentOrder == 'asc' }"></i>
+                    <i class="fas fa-long-arrow-alt-up" v-bind:class="{ 'active': currentColumn == 'sunset' && currentOrder == 'desc' }"></i>
+                  </div>
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-if="cities.length === 0"><td class="warning" colspan='4'>No city has been added.</td></tr>
+            <tr v-else v-for="city in sortedCities" v-bind:key="city.name">
+              <td>{{ city.name }}</td>
+              <td>{{ city.temp }}ºC</td>
+              <td>{{ city.sunrise }}</td>
+              <td>{{ city.sunset }}</td>
+              <td class='td-remove'>
+                <div class='icon-remove' @click="removeCityByName(city.name)">
+                  <i class='fas fa-minus-circle'></i>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Vertical Bar Chart -->
+        <div class="chart">
+          <div v-if="cities.length === 0" class="warning">No city has been added.</div>
+          <div v-else class="bar" v-for="bar in bars" v-bind:key="bar.name">
+            <div class="temp" v-bind:style="{height: bar.height + '%'}">
+              <span>{{ bar.temp }}ºC</span>
+            </div>
+            <span class="city">{{ bar.name }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <!-- Axios -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <!-- Vue -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+      window.onload = function () {
+        var app = new Vue({
+          el: '#app',
+          data() {
+            return {
+              // Cities array
+              cities: [],
+              // Sort variables
+              currentColumn:'name',
+              currentOrder:'asc',
+              // Boolean to limit cities array size
+              full: false
+            }
+          },
+          computed: {
+            // Sort city array
+            sortedCities: function() {
+              // Verify cities array size
+              if (this.cities.length === 5) {
+                this.full = true;
+              } else {
+                this.full = false
+              }
+
+              return this.cities.sort((a,b) => {
+                let modifier = 1;
+                if(this.currentOrder === 'desc') modifier = -1;
+                if(a[this.currentColumn] < b[this.currentColumn]) return -1 * modifier;
+                if(a[this.currentColumn] > b[this.currentColumn]) return 1 * modifier;
+                return 0;
+              });
+            },
+            // Chart bars array
+            bars: function() {
+              let max = 0;
+              let bars = [];
+
+              // Find highest temperature
+              for (let i in this.cities) {
+                if (this.cities[i].temp > max) {
+                  max = this.cities[i].temp;
+                }
+              }
+
+              // Fill array with chart bars details
+              for (let i in this.cities) {
+                bars.push({"name": this.cities[i].name, "temp": this.cities[i].temp, "height": (this.cities[i].temp * 100) / max});
+              }
+
+              return bars;
+            }
+          },
+          mounted() {
+            this.searchAutocomplete();
+          },
+          methods: {
+            // Fill cities search results
+            searchAutocomplete: function() {
+              var input = document.getElementById('search');
+              var autocomplete = new google.maps.places.Autocomplete(input);
+
+              var vue = this;
+              
+              google.maps.event.addListener(autocomplete, 'place_changed', function () {
+                // Input city name
+                var place = autocomplete.getPlace();
+                // input city coordinates
+                var lat = place.geometry.location.lat();
+                var lng = place.geometry.location.lng();
+
+                axios.all([
+                  // Temperature get request
+                  axios.get('https://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + lng + '&units=metric&appid=5f41109a07084f60c4f5f65616803391'),
+                  // Sunrise and sunset hours get request
+                  axios.get('https://api.sunrise-sunset.org/json?lat=' + lat + '&lng=' + lng)
+                ])
+                .then(response => {
+                  // City details
+                  let temp = response[0].data.main.temp;
+                  let sunrise = response[1].data.results.sunrise;
+                  let sunset = response[1].data.results.sunset;
+
+                  // Add city to the array
+                  vue.cities.push({"name": place.name, "temp": temp, "sunrise": sunrise, "sunset": sunset});
+                })
+                .catch(err => console.log(err))
+              });
+            },
+            // Remove city by name
+            removeCityByName: function(name) {
+              for (let i in this.cities) {
+                if (this.cities[i].name == name) {
+                  this.cities.splice(i, 1)
+                }
+              }
+            },
+            // Sort tables
+            sort: function(column) {
+              //if s == current sort, reverse
+              if(column === this.currentColumn) {
+                this.currentOrder = this.currentOrder === 'asc' ? 'desc' : 'asc';
+              }
+              this.currentColumn = column;
+            }
+          },
+        })
+      }
+    </script>
+  </body>
+</html>

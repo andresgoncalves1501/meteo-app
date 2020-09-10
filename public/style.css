@@ -1,0 +1,378 @@
+/* fonts */
+
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+
+/* reset css */
+
+* {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+}
+
+*:hover, *:focus {
+  outline: none;
+}
+
+*::-webkit-scrollbar {
+  display: none;
+}
+
+/* core style */
+
+body, html {
+  font-family: 'Quicksand', sans-serif;
+}
+
+/* navbar */
+
+.navbar {
+  align-items: center;
+  background: #F98A29;
+  display: flex;
+  height: 60px;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  position: fixed;
+  width: 100vw;
+  z-index: 999;
+}
+
+.navbar input[type="text"] {
+  background: rgb(365, 365, 365, 0.85);
+  border: none;
+  border-radius: 30px;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 16px;
+  padding: 8px 8px 8px 35px;
+  width: 720px;
+}
+
+.navbar i {
+  color: rgb(249, 138, 41, 0.85);
+  font-size: 20px;
+  margin-left: -680px;
+  position: absolute;
+}
+
+.navbar input[type="text"]:focus {
+  background: #fff;
+}
+
+.navbar input[type="text"]:focus + .navbar i {
+  color: #F98A29;
+}
+
+/* container */
+
+.container {
+  align-items: center;
+  display: flex;
+  height: calc(100vh - 40px);
+  justify-content: space-around;
+  /* margin: auto 100px; */
+  width: 100vw;
+}
+
+/* table */
+
+table {
+  border-collapse: collapse;
+  border-radius: 15px;
+  border-style: hidden;
+  box-shadow: 0 0 0 1px #A1A1A1;
+  height: 360px;
+  text-align: center;
+  width: 720px;
+}
+
+th, td {
+  padding: 12px 24px;
+}
+
+/* table head */
+
+th {
+  color: #363636;
+  cursor: pointer;
+}
+
+th .th-wrap {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  position: relative;
+}
+
+th .th-wrap i.th-icon {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* sort button */
+
+th .th-wrap .sort {
+  color: #A1A1A1;
+  margin-left: auto;
+}
+
+th .th-wrap .sort i.active {
+  color: #363636;
+}
+
+/* table body cells */
+
+td {
+  border: 1px solid #A1A1A1;
+}
+
+/* button remove */
+
+tr td:nth-child(4) {
+  border-right-style: none;
+}
+
+tr .td-remove {
+  border: none;
+  color: #F98A29;
+  content: '';
+  font-size: 20px;
+  height: 0;
+  padding: 0;
+  width: 0;
+}
+
+tr .td-remove .icon-remove {
+  position: relative;
+}
+
+tr .td-remove .icon-remove i {
+  cursor: pointer;
+  position: absolute;
+  right: -40px;
+  top: -5px;
+}
+
+/* vertical bar chart */
+
+.chart {
+  border-bottom: 1px solid #A1A1A1;
+  display: flex;
+  height: 360px;
+  justify-content: space-around;
+  max-height: 360px;
+  width: 480px;
+}
+
+/* chart bar */
+
+.chart .bar {
+  position: relative;
+}
+
+.chart .bar .temp {
+  background-color: #F98A29;
+  bottom: 0px;
+  position: absolute;
+  transform: translateX(-50%);
+  width: 80px;
+}
+
+/* chart bar temperature label */
+
+.chart .bar .temp span {
+  color: #363636;
+  left: 50%;
+  position: absolute;
+  transform: translateX(-50%);
+  top: -30px;
+}
+
+/* chart bar city label */
+
+.chart .bar .city {
+  color: #363636;
+  left: 50%;
+  margin-bottom: 2.5px;
+  position: absolute;
+  text-align: center;
+  top: 375px;
+  transform: translateX(-50%);
+}
+
+/* chart warning */
+
+.chart .warning {
+  align-items: center;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  width: 100%;
+}
+
+@media screen and (max-width: 1440px)  {
+
+  /* table resize */
+
+  table {
+    width: 520px;
+  }
+
+  /* chart resize */
+
+  .chart {
+    width: 520px;
+  }
+}
+
+@media screen and (max-width: 1024px)  {
+
+  /* navbar input resize */
+
+  .navbar input[type="text"] {
+    width: 520px;
+  }
+
+  .navbar i {
+    margin-left: -480px;
+  }
+
+  /* page restructure */
+
+  .container {
+    align-items: center;
+    flex-direction: column;
+    height: auto;
+    justify-content: center;
+  }
+
+  table {
+    margin: 80px auto 80px auto;
+  }
+}
+
+@media screen and (max-width: 480px)  {
+
+  /* search nav */
+
+  .navbar {
+    height: 40px;
+  }
+  
+  .navbar input[type="text"] {
+    font-size: 12px;
+    padding: 4px 4px 4px 25px;
+    width: 300px;
+  }
+
+  .navbar i {
+    font-size: 16px;
+    margin-left: -275px;
+  }
+  
+  /* table */
+
+  table {
+    height: 240px;
+    margin: 60px auto 60px auto;
+    width: 300px;
+  }
+
+  th, td {
+    font-size: 12px;
+    max-width: 100px;
+    padding: 4px 8px;
+  }
+
+  tr .td-remove .icon-remove i {
+    font-size: 12px;
+    right: -20px;
+  }
+  
+  td.warning {
+    font-size: 16px;
+  }
+
+  /* chart */
+
+  .chart {
+    height: 240px;
+    width: 300px;
+  }
+
+  .chart .bar .temp {
+    width: 50px;
+  }
+
+  .chart .bar .city {
+    top: 250px;
+  }
+
+  .chart span{
+    font-size: 12px;
+  }
+}
+
+@media screen and (max-width: 320px)  {
+
+  /* navbar */
+
+  .navbar input[type="text"] {
+    font-size: 11px;
+    width: 240px;
+  }
+
+  .navbar i {
+    font-size: 16px;
+    margin-left: -220px;
+  }
+
+  /* table */
+
+  table {
+    height: 200px;
+    max-height: 200px;
+    width: 240px;
+  }
+
+  th, td {
+    font-size: 11px;
+    max-width: 50px;
+    padding: 4px 8px;
+  }
+
+  tr .td-remove .icon-remove i {
+    font-size: 11px;
+    right: -17px;
+  }
+  
+  td.warning {
+    font-size: 16px;
+  }
+
+  /* chart */
+
+  .chart {
+    height: 200px;
+    width: 240px;
+  }
+
+  .chart .bar .temp {
+    width: 40px;
+  }
+
+  .chart .bar .temp span {
+    top: -20px;
+  }
+
+  .chart .bar .city {
+    top: 210px;
+  }
+
+  .chart span {
+    font-size: 11px;
+  }
+}
