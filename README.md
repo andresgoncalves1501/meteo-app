@@ -1,3 +1,8 @@
-Para aceder basta fazer NPM START na linha de comnados e aceder ao link htttp://localhost:3000
+## Commands
 
-É necessário também um Google Maps API KEY, e inserir no ficheiro index.html aonde diz 'APIKEY', para a pesquisa das cidades funcionar 
+```
+npm run start
+```
+
+It will probably run in htttp://localhost:3000
+Note: It's necessary a Google Maps API KEY and insert in the index.html file on 'APIKEY'.
